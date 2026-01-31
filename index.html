@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Superstar Auditions | Temukan Bakatmu!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #8a2be2;
+            --secondary: #ff00ff;
+            --accent: #00ffff;
+            --dark: #0a0a1a;
+            --light: #f5f5ff;
+            --gradient: linear-gradient(135deg, #8a2be2, #ff00ff, #00ffff);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Background Animated Stars */
+        .stars-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 25px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(10, 10, 26, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(138, 43, 226, 0.3);
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: logoGlow 2s infinite alternate;
+        }
+
+        @keyframes logoGlow {
+            from { filter: drop-shadow(0 0 10px rgba(138, 43, 226, 0.5)); }
+            to { filter: drop-shadow(0 0 20px rgba(255, 0, 255, 0.8)); }
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            position: relative;
+            padding: 10px 0;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .cta-button {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(138, 43, 226, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(138, 43, 226, 0.7);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 150px 50px 100px;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            line-height: 1.1;
+            margin-bottom: 30px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: textGlow 3s infinite alternate;
+        }
+
+        @keyframes textGlow {
+            0% { filter: drop-shadow(0 0 10px rgba(138, 43, 226, 0.5)); }
+            100% { filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.8)); }
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            color: #ccccff;
+        }
+
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .floating-element {
+            position: absolute;
+            font-size: 3rem;
+            opacity: 0.1;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(100px, 100px) rotate(360deg); }
+        }
+
+        /* Info Section */
+        .info-section {
+            padding: 100px 50px;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3.5rem;
+            margin-bottom: 80px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 40px 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 43, 226, 0.2);
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-card:hover {
+            transform: translateY(-20px);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .info-card i {
+            font-size: 3rem;
+            margin-bottom: 25px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .info-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        /* Timeline */
+        .timeline {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--gradient);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            margin-bottom: 80px;
+            position: relative;
+            width: 45%;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s;
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 55%;
+        }
+
+        .timeline-content {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .timeline-date {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--gradient);
+            color: white;
+            border-radius: 50px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        /* Registration Form */
+        .registration-section {
+            padding: 100px 50px;
+            background: rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .registration-form {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 60px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s;
+        }
+
+        .form-group.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(138, 43, 226, 0.5);
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+
+        .file-upload {
+            position: relative;
+            padding: 40px;
+            border: 2px dashed rgba(138, 43, 226, 0.5);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-upload:hover {
+            border-color: var(--accent);
+            background: rgba(0, 255, 255, 0.05);
+        }
+
+        /* Judges Section */
+        .judges-section {
+            padding: 100px 50px;
+        }
+
+        .judges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .judge-card {
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.8s;
+        }
+
+        .judge-card.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .judge-image {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 25px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid transparent;
+            background: var(--gradient) border-box;
+            position: relative;
+            animation: judgeGlow 3s infinite alternate;
+        }
+
+        @keyframes judgeGlow {
+            0% { box-shadow: 0 0 20px rgba(138, 43, 226, 0.5); }
+            100% { box-shadow: 0 0 40px rgba(255, 0, 255, 0.8); }
+        }
+
+        .judge-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            padding: 5px;
+            background: var(--dark);
+        }
+
+        /* Footer */
+        footer {
+            padding: 80px 50px 40px;
+            background: rgba(0, 0, 0, 0.8);
+            text-align: center;
+            border-top: 1px solid rgba(138, 43, 226, 0.3);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .social-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .social-icon:hover {
+            background: var(--gradient);
+            transform: translateY(-10px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero h1 { font-size: 4rem; }
+            .section-title { font-size: 2.8rem; }
+            nav ul { gap: 20px; }
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 20px 30px; }
+            .hero { padding: 150px 30px 80px; }
+            .hero h1 { font-size: 3rem; }
+            .info-section, .registration-section, .judges-section { padding: 80px 30px; }
+            .timeline::before { left: 30px; }
+            .timeline-item { width: 100%; left: 0 !important; padding-left: 70px; }
+            .registration-form { padding: 40px 30px; }
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 { font-size: 2.5rem; }
+            .section-title { font-size: 2.2rem; }
+            nav { display: none; }
+            .cta-button { padding: 12px 25px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Stars Background -->
+    <div class="stars-background" id="stars"></div>
+
+    <!-- Header & Navigation -->
+    <header>
+        <div class="logo">SUPERSTAR</div>
+        <nav>
+            <ul>
+                <li><a href="#home">Beranda</a></li>
+                <li><a href="#info">Informasi</a></li>
+                <li><a href="#timeline">Timeline</a></li>
+                <li><a href="#judges">Juri</a></li>
+                <li><a href="#register">Daftar</a></li>
+            </ul>
+        </nav>
+        <button class="cta-button" onclick="scrollToRegister()">DAFTAR SEKARANG</button>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>SUPERSTAR AUDITIONS 2024</h1>
+            <p>Temukan bakat terpendammu dan wujudkan impian menjadi superstar berikutnya! Audisi terbuka untuk penyanyi, penari, dan performer dari seluruh Indonesia.</p>
+            <button class="cta-button" onclick="scrollToRegister()">
+                <i class="fas fa-microphone"></i> DAFTAR AUDISI GRATIS
+            </button>
+        </div>
+        <div class="floating-elements">
+            <div class="floating-element" style="top:20%; left:10%;"><i class="fas fa-music"></i></div>
+            <div class="floating-element" style="top:60%; left:80%;"><i class="fas fa-star"></i></div>
+            <div class="floating-element" style="top:40%; left:85%;"><i class="fas fa-microphone"></i></div>
+        </div>
+    </section>
+
+    <!-- Info Section -->
+    <section class="info-section" id="info">
+        <h2 class="section-title">INFORMASI AUDISI</h2>
+        <div class="info-cards">
+            <div class="info-card">
+                <i class="fas fa-trophy"></i>
+                <h3>Hadiah Fantastis</h3>
+                <p>Kontrak rekaman senilai 1 Miliar, tur nasional, dan menjadi bintang iklan brand ternama!</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-users"></i>
+                <h3>Terbuka Untuk Semua</h3>
+                <p>Usia 16-30 tahun, semua genre musik, solo atau grup. Yang penting punya bakat dan passion!</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-map-marker-alt"></i>
+                <h3>5 Kota Besar</h3>
+                <p>Jakarta, Bandung, Surabaya, Medan, Makassar. Pilih lokasi terdekat untuk audisi!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="info-section" id="timeline">
+        <h2 class="section-title">TIMELINE AUDISI</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">1 - 30 APRIL 2024</div>
+                    <h3>Pendaftaran Online</h3>
+                    <p>Daftar melalui website ini dengan mengisi formulir dan mengupload video audisi.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">15 - 30 MEI 2024</div>
+                    <h3>Audisi Langsung</h3>
+                    <p>Audisi tatap muka di 5 kota besar Indonesia. Daftar ulang di lokasi audisi.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">JUNI 2024</div>
+                    <h3>Bootcamp & Pelatihan</h3>
+                    <p>100 finalis akan mengikuti bootcamp intensif dengan mentor profesional.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">JULI 2024</div>
+                    <h3>Live Show & Grand Final</h3>
+                    <p>Pertunjukan langsung di televisi nasional dengan voting publik.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Judges Section -->
+    <section class="judges-section" id="judges">
+        <h2 class="section-title">PANEL JURI</h2>
+        <div class="judges-grid">
+            <div class="judge-card">
+                <div class="judge-image">
+                    <img src="https://images.unsplash.com/photo-1494790108755-2616b786d4d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Juri 1">
+                </div>
+                <h3>Raisa Andriana</h3>
+                <p>Penyanyi & Songwriter</p>
+            </div>
+            <div class="judge-card">
+                <div class="judge-image">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Juri 2">
+                </div>
+                <h3>Afgan Syahreza</h3>
+                <p>Penyanyi Internasional</p>
+            </div>
+            <div class="judge-card">
+                <div class="judge-image">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Juri 3">
+                </div>
+                <h3>Yovie Widianto</h3>
+                <p>Music Producer Legendaris</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Registration Section -->
+    <section class="registration-section" id="register">
+        <h2 class="section-title">FORMULIR PENDAFTARAN</h2>
+        <div class="registration-form">
+            <form id="auditionForm">
+                <div class="form-group">
+                    <label for="fullName"><i class="fas fa-user"></i> NAMA LENGKAP</label>
+                    <input type="text" id="fullName" name="fullName" required placeholder="Masukkan nama lengkap Anda">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email"><i class="fas fa-envelope"></i> EMAIL</label>
+                    <input type="email" id="email" name="email" required placeholder="email@anda.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone"><i class="fas fa-phone"></i> NOMOR TELEPON</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="0812-3456-7890">
+                </div>
+                
+                <div class="form-group">
+                    <label for="city"><i class="fas fa-city"></i> KOTA AUDISI</label>
+                    <select id="city" name="city" required>
+                        <option value="">Pilih Kota Audisi</option>
+                        <option value="jakarta">Jakarta</option>
+                        <option value="bandung">Bandung</option>
+                        <option value="surabaya">Surabaya</option>
+                        <option value="medan">Medan</option>
+                        <option value="makassar">Makassar</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="talent"><i class="fas fa-star"></i> JENIS BAKAT</label>
+                    <select id="talent" name="talent" required>
+                        <option value="">Pilih Jenis Bakat</option>
+                        <option value="singing">Menyanyi</option>
+                        <option value="dance">Menari</option>
+                        <option value="both">Menyanyi & Menari</option>
+                        <option value="other">Lainnya</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="experience"><i class="fas fa-history"></i> PENGALAMAN (Opsional)</label>
+                    <textarea id="experience" name="experience" rows="4" placeholder="Ceritakan pengalaman perform atau kontes sebelumnya..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-video"></i> VIDEO AUDISI (Max 5MB)</label>
+                    <div class="file-upload" onclick="document.getElementById('videoFile').click()">
+                        <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                        <p>KLIK UNTUK UPLOAD VIDEO AUDISI</p>
+                        <p style="font-size: 0.9rem; opacity: 0.7;">Format: MP4, AVI, MOV | Durasi: Max 3 menit</p>
+                        <input type="file" id="videoFile" accept="video/*" style="display: none;">
+                    </div>
+                </div>
+                
+                <button type="submit" class="cta-button" style="width: 100%; padding: 20px; font-size: 1.3rem;">
+                    <i class="fas fa-paper-plane"></i> KIRIM PENDAFTARAN
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="logo" style="font-size: 3rem; margin-bottom: 30px;">SUPERSTAR</div>
+        <p style="max-width: 600px; margin: 0 auto 40px; opacity: 0.8;">
+            Platform pencarian bakat terbesar di Indonesia. Temukan bakatmu, wujudkan impianmu, jadilah SUPERSTAR berikutnya!
+        </p>
+        
+        <div class="social-links">
+            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+        </div>
+        
+        <p style="margin-top: 50px; opacity: 0.6;">
+            &copy; 2024 Superstar Auditions. Hak Cipta Dilindungi.
+            <br>superstar@auditions.id | (021) 1234-5678
+        </p>
+    </footer>
+
+    <script>
+        // Create animated stars background
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = Math.random() * 2 + 2 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Scroll animations
+        function checkVisibility() {
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            const formGroups = document.querySelectorAll('.form-group');
+            const judgeCards = document.querySelectorAll('.judge-card');
+            
+            timelineItems.forEach(item => {
+                const rect = item.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.8) {
+                    item.classList.add('visible');
+                }
+            });
+            
+            formGroups.forEach((group, index) => {
+                const rect = group.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.8) {
+                    setTimeout(() => {
+                        group.classList.add('visible');
+                    }, index * 200);
+                }
+            });
+            
+            judgeCards.forEach((card, index) => {
+                const rect = card.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.8) {
+                    setTimeout(() => {
+                        card.classList.add('visible');
+                    }, index * 300);
+                }
+            });
+        }
+
+        // Smooth scrolling
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    window.scrollTo({
+                        top: targetSection.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        function scrollToRegister() {
+            const registerSection = document.getElementById('register');
+            window.scrollTo({
+                top: registerSection.offsetTop - 80,
+                behavior: 'smooth'
+            });
+        }
+
+        // Form submission
+        document.getElementById('auditionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show loading animation
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> MENGIRIM...';
+            submitBtn.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                alert('PENDAFTARAN BERHASIL!\n\nTerima kasih telah mendaftar Superstar Auditions 2024. Tim kami akan menghubungi Anda dalam 1x24 jam untuk konfirmasi lebih lanjut.');
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                this.reset();
+            }, 2000);
+        });
+
+        // Floating elements animation
+        function animateFloatingElements() {
+            const elements = document.querySelectorAll('.floating-element');
+            elements.forEach((el, index) => {
+                el.style.animationDuration = (15 + Math.random() * 10) + 's';
+                el.style.animationDelay = (index * 2) + 's';
+            });
+        }
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            animateFloatingElements();
+            checkVisibility();
+            
+            window.addEventListener('scroll', checkVisibility);
+            
+            // Add hover effect to info cards
+            document.querySelectorAll('.info-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-20px) scale(1.05)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+        });
+    </script>
+</body>
+</html>
